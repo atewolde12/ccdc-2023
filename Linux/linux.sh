@@ -307,6 +307,7 @@ elif [ $input -eq 5 ]; then
 elif [ $input -eq 6 ]; then
     start
 fi
+chmodcrit
 }
 
 start
