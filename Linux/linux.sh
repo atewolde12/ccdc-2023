@@ -37,24 +37,24 @@ echo "
 8.) chmod critical
 9.) Exit"
 read input
-if [$input == 1]; then
+if ["$input" == "1"]; then
     echo 1
     packageSelect
-elif [$input == 2]; then
+elif ["$input" == "2"]; then
     nologin
-elif [$input == 3]; then
+elif ["$input" == "3"]; then
     chgpasswd
-elif [$input == 4]; then
+elif ["$input" == "4"]; then
     SSHDconf
-elif [$input == 5]; then
+elif ["$input" == "5"]; then
     UFWconf
-elif [$input == 6]; then
+elif ["$input" == "6"]; then
     updategrade
-elif [$input == 7]; then
+elif ["$input" == "7"]; then
     resolv 
-elif [$input == 8]; then
+elif ["$input" == "8"]; then
     chmodcrit
-elif [$input == 9]; then
+elif ["$input" == "9"]; then
     exit
 else
     start
