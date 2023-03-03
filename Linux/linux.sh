@@ -1,6 +1,6 @@
 #!/bin/bash
 
-os=grep '^ID' /etc/os-release | cut -d= -f2 | sed 's/"//g' | head -n 1
+os=$(grep -e '^ID' /etc/os-release | cut -d= -f2 | sed 's/"//g' | head -n 1)
 
 if which apt >/dev/null 2>&1; then
   echo "This system uses apt."
@@ -208,13 +208,13 @@ echo "UFW config:
 4.) Open ports
 5.) Exit"
 if [ $input -eq 1 ]; then
-    if [ "$pm" -eq "apt" ]; then
+    if [ "$pm" = "apt" ]; then
         sudo apt update
         sudo apt install ufw
-    elif [ "$pm" -eq "apt-get" ]; then
+    elif [ "$pm" = "apt-get" ]; then
         sudo apt-get update
         sudo apt-get install ufw
-    elif [ "$on" -eq "yum" ]; then
+    elif [ "$on" = "yum" ]; then
         sudo yum update
         sudo yum install ufw
     fi
