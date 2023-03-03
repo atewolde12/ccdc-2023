@@ -192,7 +192,8 @@ elif [ $input -eq 6 ]; then
     sudo sed -i '/PermitTunnel/Id' /etc/ssh/sshd_config
     echo "PermitTunnel no" | sudo tee -a /etc/ssh/sshd_config
     sudo service sshd restart
-elif [ $input -eq 6 ]; then
+    read -s -n 1 -p "Press any key to continue . . ."
+elif [ $input -eq 7 ]; then
     start
 fi
 SSHDconf
@@ -240,6 +241,7 @@ Enter port number:"
     read port
     sudo ufw allow $port/tcp
     sudo ufw allow $port/udp
+    read -s -n 1 -p "Press any key to continue . . ."
 elif [ $input -eq 5 ]; then
     start
 fi
@@ -288,20 +290,20 @@ echo "Chmod all those important files:
 6.) Exit"
 read input
 if [ $input -eq 1 ]; then
-    chmod 644 /etc/passwd
-    chown root:root /etc/passwd
+    sudo chmod 644 /etc/passwd
+    sudo chown root:root /etc/passwd
 elif [ $input -eq 2 ]; then
-    chmod 644 /etc/group
-    chown root:root /etc/group
+    sudo chmod 644 /etc/group
+    sudo chown root:root /etc/group
 elif [ $input -eq 3 ]; then
-    chmod 600 /etc/shadow
-    chown root:root /etc/shadow
+    sudo chmod 600 /etc/shadow
+    sudo chown root:root /etc/shadow
 elif [ $input -eq 4 ]; then
-    chmod 600 /etc/gshadow
-    chown root:root /etc/gshadow
+    sudo chmod 600 /etc/gshadow
+    sudo chown root:root /etc/gshadow
 elif [ $input -eq 5 ]; then
-    chmod 644 -R /etc/ssh
-    chown -R root:root /etc/ssh
+    sudo chmod 644 -R /etc/ssh
+    sudo chown -R root:root /etc/ssh
 elif [ $input -eq 6 ]; then
     start
 fi
