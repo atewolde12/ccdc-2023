@@ -207,6 +207,7 @@ echo "UFW config:
 3.) Close all outgoing ports
 4.) Open ports
 5.) Exit"
+read input
 if [ $input -eq 1 ]; then
     if [ "$pm" = "apt" ]; then
         sudo apt update
@@ -285,6 +286,7 @@ echo "Chmod all those important files:
 4.) root 600 gshadow
 5.) root 644 etc/ssh
 6.) Exit"
+read input
 if [ $input -eq 1 ]; then
     chmod 644 /etc/passwd
     chown root:root /etc/passwd
