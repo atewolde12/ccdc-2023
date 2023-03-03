@@ -7,7 +7,7 @@ function goto {
   exit
 }
 
-os = (grep -E '^ID' /etc/os-release | cut -d= -f2 | sed 's/"//g' | head -n 1)
+os = grep -E '^ID' /etc/os-release | cut -d= -f2 | sed 's/"//g' | head -n 1
 
 if which apt >/dev/null 2>&1; then
   echo "This system uses apt."
