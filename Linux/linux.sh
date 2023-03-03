@@ -303,7 +303,7 @@ elif [$input == 6]; then
 fi
 }
 
-
+start
 
 #if [$input == 1]; then
 #elif [$input == 2]; then
