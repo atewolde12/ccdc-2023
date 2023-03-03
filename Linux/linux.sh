@@ -46,6 +46,7 @@ echo "
 9.) Exit"
 read input
 if [$input == 1]; then
+    echo 1
     goto packageSelect
 elif [$input == 2]; then
     goto nologin
