@@ -249,13 +249,13 @@ UFWconf
 function updategrade() {
 clear
 echo "updating and upgrading"
-if [ "$pm" -eq "apt" ]; then
+if [ "$pm" = "apt" ]; then
     sudo apt update
     sudo apt upgrade
-elif [ "$pm" -eq "apt-get" ]; then
+elif [ "$pm" = "apt-get" ]; then
     sudo apt-get update
     sudo apt-get upgrade
-elif [ "$on" -eq "yum" ]; then
+elif [ "$on" = "yum" ]; then
     sudo yum update
     sudo yum upgrade
 fi
