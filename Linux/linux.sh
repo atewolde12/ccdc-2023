@@ -71,22 +71,22 @@ echo "Select you package manager:
 3.) yum
 4.) Fuck, I didn't mean to go here. Take me back"
 read input
-if ["$input" == 1]; then
+if [ "$input" -eq 1 ]; then
     pm="apt"
     echo "Apt selected"
     read -s -n 1 -p "Press any key to continue . . ."
     start
-elif [$input == 2]; then
+elif [ $input -eq 2 ]; then
     pm="apt-get"
     echo "Apt-get selected"
     read -s -n 1 -p "Press any key to continue . . ."
     start
-elif [$input == 3]; then
+elif [ $input -eq 3 ]; then
     pm="yum"
     echo "Yum selected"
     read -s -n 1 -p "Press any key to continue . . ."
     start
-elif [$input == 4]; then
+elif [ $input -eq 4 ]; then
     start
 else
     packageSelect
@@ -99,7 +99,7 @@ clear
 grep -v "/sbin/nologin" /etc/passwd | cut -d: -f1,3,7 
 echo -e "Enter a user id to change to /sbin/nologin: (UID/-1 to exit)\n"
 read input
-if [$input == -1]; then
+if [ $input -eq -1 ]; then
     start
 else
     sudo nano /etc/passwd
@@ -118,26 +118,26 @@ echo "Lock and change password tool:
 5.) Lock user accounts
 6.) Fuck, I didn't mean to go here. Take me back"
 read input
-if [$input == 1]; then
+if [ $input -eq 1 ]; then
     sudo passwd -l root
-elif [$input == 2]; then
+elif [ $input -eq 2 ]; then
     for i in {1..999}
     do
         if sudo grep -q "^.*:.*:$i:" /etc/passwd; then
             sudo passwd -l $(grep "^.*:.*:$i:" /etc/passwd | cut -d':' -f1)
         fi
     done
-elif [$input == 3]; then
+elif [ $input -eq 3 ]; then
     sudo grep "^[^:]*:[^:]*:1[0-9][0-9][0-9][^:]*:" /etc/passwd
-elif [$input == 4]; then
+elif [ $input -eq 4 ]; then
     echo "enter UID"
     read UID
     sudo passwd $(grep "^.*:.*:$UID:" /etc/passwd | cut -d':' -f1)
-elif [$input == 5]; then
+elif [ $input -eq 5 ]; then
     echo "enter UID"
     read UID
     sudo passwd -l $(grep "^.*:.*:$UID:" /etc/passwd | cut -d':' -f1)
-elif [$input == 6]; then
+elif [ $input -eq 6 ]; then
     start
 else
     chgpasswd
@@ -156,27 +156,27 @@ echo "sshd config:
 6.) All of it
 7.) Exit"
 read input
-if [$input == 1]; then
+if [ $input -eq 1 ]; then
     sudo sed -i '/[Pp][Ee][Rr][Mm][Ii][Tt][Rr][Oo][Oo][Tt][Ll][Oo][Gg][Ii][Nn]/d' /etc/ssh/sshd_config
     echo "PermitRootLogin no" | sudo tee -a /etc/ssh/sshd_config
     sudo service sshd restart
-elif [$input == 2]; then
+elif [ $input -eq 2 ]; then
     sudo sed -i '/MaxSessions/Id' /etc/ssh/sshd_config
     echo "MaxSessions 2" | sudo tee -a /etc/ssh/sshd_config
     sudo service sshd restart
-elif [$input == 3]; then
+elif [ $input -eq 3 ]; then
     sudo sed -i '/MaxAuthTries/Id' /etc/ssh/sshd_config
     echo "MaxAuthTries 3" | sudo tee -a /etc/ssh/sshd_config
     sudo service sshd restart
-elif [$input == 4]; then
+elif [ $input -eq 4 ]; then
     sudo sed -i '/PasswordAuthentication/Id' /etc/ssh/sshd_config
     echo "PasswordAuthentication yes" | sudo tee -a /etc/ssh/sshd_config
     sudo service sshd restart
-elif [$input == 5]; then
+elif [ $input -eq 5 ]; then
     sudo sed -i '/PermitEmptyPasswords/Id' /etc/ssh/sshd_config
     echo "PermitEmptyPasswords no" | sudo tee -a /etc/ssh/sshd_config
     sudo service sshd restart
-elif [$input == 6]; then
+elif [ $input -eq 6 ]; then
     sudo sed -i '/[Pp][Ee][Rr][Mm][Ii][Tt][Rr][Oo][Oo][Tt][Ll][Oo][Gg][Ii][Nn]/d' /etc/ssh/sshd_config
     echo "PermitRootLogin no" | sudo tee -a /etc/ssh/sshd_config
     sudo sed -i '/MaxSessions/Id' /etc/ssh/sshd_config
@@ -192,7 +192,7 @@ elif [$input == 6]; then
     sudo sed -i '/PermitTunnel/Id' /etc/ssh/sshd_config
     echo "PermitTunnel no" | sudo tee -a /etc/ssh/sshd_config
     sudo service sshd restart
-elif [$input == 6]; then
+elif [ $input -eq 6 ]; then
     start
 fi
 SSHDconf
@@ -207,22 +207,22 @@ echo "UFW config:
 3.) Close all outgoing ports
 4.) Open ports
 5.) Exit"
-if [$input == 1]; then
-    if ["$pm" == "apt"]; then
+if [ $input -eq 1 ]; then
+    if [ "$pm" -eq "apt" ]; then
         sudo apt update
         sudo apt install ufw
-    elif ["$pm" == "apt-get"]; then
+    elif [ "$pm" -eq "apt-get" ]; then
         sudo apt-get update
         sudo apt-get install ufw
-    elif ["$on" == "yum"]; then
+    elif [ "$on" -eq "yum" ]; then
         sudo yum update
         sudo yum install ufw
     fi
-elif [$input == 2]; then
+elif [ $input -eq 2 ]; then
     sudo ufw default deny incoming
-elif [$input == 3]; then
+elif [ $input -eq 3 ]; then
     sudo ufw default allow outgoing
-elif [$input == 4]; then
+elif [ $input -eq 4 ]; then
     echo "HTTP:80
 HTTPS:443
 FTP:21
@@ -239,7 +239,7 @@ Enter port number:"
     read port
     sudo ufw allow $port/tcp
     sudo ufw allow $port/udp
-elif [$input == 5]; then
+elif [ $input -eq 5 ]; then
     start
 fi
 UFWconf
@@ -249,13 +249,13 @@ UFWconf
 function updategrade() {
 clear
 echo "updating and upgrading"
-if ["$pm" == "apt"]; then
+if [ "$pm" -eq "apt" ]; then
     sudo apt update
     sudo apt upgrade
-elif ["$pm" == "apt-get"]; then
+elif [ "$pm" -eq "apt-get" ]; then
     sudo apt-get update
     sudo apt-get upgrade
-elif ["$on" == "yum"]; then
+elif [ "$on" -eq "yum" ]; then
     sudo yum update
     sudo yum upgrade
 fi
@@ -285,31 +285,31 @@ echo "Chmod all those important files:
 4.) root 600 gshadow
 5.) root 644 etc/ssh
 6.) Exit"
-if [$input == 1]; then
+if [ $input -eq 1 ]; then
     chmod 644 /etc/passwd
     chown root:root /etc/passwd
-elif [$input == 2]; then
+elif [ $input -eq 2 ]; then
     chmod 644 /etc/group
     chown root:root /etc/group
-elif [$input == 3]; then
+elif [ $input -eq 3 ]; then
     chmod 600 /etc/shadow
     chown root:root /etc/shadow
-elif [$input == 4]; then
+elif [ $input -eq 4 ]; then
     chmod 600 /etc/gshadow
     chown root:root /etc/gshadow
-elif [$input == 5]; then
+elif [ $input -eq 5 ]; then
     chmod 644 -R /etc/ssh
     chown -R root:root /etc/ssh
-elif [$input == 6]; then
+elif [ $input -eq 6 ]; then
     start
 fi
 }
 
 start
 
-#if [$input == 1]; then
-#elif [$input == 2]; then
-#elif [$input == 3]; then
-#elif [$input == 4]; then
-#elif [$input == 5]; then
+#if [ $input -eq 1]; then
+#elif [ $input -eq 2]; then
+#elif [ $input -eq 3]; then
+#elif [ $input -eq 4]; then
+#elif [ $input -eq 5]; then
 #fi
