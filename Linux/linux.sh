@@ -1,13 +1,6 @@
 #!/bin/bash
 
-function goto {
-  label=$1
-  command=$(sed -n "/^$label:/{:a;n;p;ba};" $0 | grep -v ':$')
-  eval "$command"
-  exit
-}
-
-os=grep -E '^ID' /etc/os-release | cut -d= -f2 | sed 's/"//g' | head -n 1
+os=grep -e '^ID' /etc/os-release | cut -d= -f2 | sed 's/"//g' | head -n 1
 
 if which apt >/dev/null 2>&1; then
   echo "This system uses apt."
@@ -22,8 +15,7 @@ else
   echo "Neither apt, apt-get, nor yum command is found on this system."
 fi
 
-
-start:
+function start(){
 echo "
   _____  __  __  _____ _____ _____   _____ 
  |  __ \|  \/  |/ ____/ ____|  __ \ / ____|
@@ -47,30 +39,30 @@ echo "
 read input
 if [$input == 1]; then
     echo 1
-    goto packageSelect
+    packageSelect
 elif [$input == 2]; then
-    goto nologin
+    nologin
 elif [$input == 3]; then
-    goto chgpasswd
+    chgpasswd
 elif [$input == 4]; then
-    goto SSHDconf
+    SSHDconf
 elif [$input == 5]; then
-    goto UFWconf
+    UFWconf
 elif [$input == 6]; then
-    goto updategrade
+    updategrade
 elif [$input == 7]; then
-    goto resolv 
+    resolv 
 elif [$input == 8]; then
-    goto chmodcrit
+    chmodcrit
 elif [$input == 9]; then
     exit
 else
-    goto start
+    start
 fi
-
+}
 
 #1
-packageSelect:
+function packageSelect(){
 clear
 echo "Select you package manager:
 1.) Apt
@@ -82,38 +74,38 @@ if ["$input" == 1]; then
     pm="apt"
     echo "Apt selected"
     read -s -n 1 -p "Press any key to continue . . ."
-    goto start
+    start
 elif [$input == 2]; then
     pm="apt-get"
     echo "Apt-get selected"
     read -s -n 1 -p "Press any key to continue . . ."
-    goto start
+    start
 elif [$input == 3]; then
     pm="yum"
     echo "Yum selected"
     read -s -n 1 -p "Press any key to continue . . ."
-    goto start
+    start
 elif [$input == 4]; then
-    goto start
+    start
 else
-    goto packageSelect
+    packageSelect
 fi
-
+}
 
 #2
-#idk how to use sed so change the sbin urself
-nologin:
+function nologin() {
 grep -v "/sbin/nologin" /etc/passwd | cut -d: -f1,3,7 
 echo -e "Enter a user id to change to /sbin/nologin: (UID/-1 to exit)\n"
 read input
 if [$input == -1]; then
-    goto start
+    start
 else
     sudo nano /etc/passwd
 fi
-goto nologin
+nologin
+}
 
-chgpasswd:
+function chgpasswd() {
 #3
 clear
 echo "Lock and change password tool:
@@ -144,11 +136,13 @@ elif [$input == 5]; then
     read UID
     sudo passwd -l $(grep "^.*:.*:$UID:" /etc/passwd | cut -d':' -f1)
 elif [$input == 6]; then
-    goto start
+    start
 else
-    goto chgpasswd
+    chgpasswd
 fi
+}
 
+function SSHDconf(){
 #4
 SSHDconf:
 clear
@@ -198,12 +192,13 @@ elif [$input == 6]; then
     echo "PermitTunnel no" | sudo tee -a /etc/ssh/sshd_config
     sudo service sshd restart
 elif [$input == 6]; then
-    goto start
+    start
 fi
-goto SSHDconf
+SSHDconf
+}
 
 #5
-UFWconf:
+function UFWconf(){
 clear
 echo "UFW config:
 1.) Install UFW
@@ -243,12 +238,13 @@ Enter port number:"
     sudo ufw allow $port/tcp
     sudo ufw allow $port/udp
 elif [$input == 5]; then
-    goto start
+    start
 fi
-goto UFWconf
+UFWconf
+}
 
 #6
-updategrade:
+function updategrade() {
 clear
 echo "updating and upgrading"
 if ["$pm" == "apt"]; then
@@ -263,10 +259,11 @@ elif ["$on" == "yum"]; then
 fi
 echo "Done :)"
 read -s -n 1 -p "Press any key to continue . . ."
-goto start
+start
+}
 
 #7
-resolv:
+function resolv() {
 echo "Configing resolv.conf"
 sudo rm /etc/resolv.conf
 echo "#Config by rmccdc script" | sudo tee -a /etc/resolv.conf
@@ -274,10 +271,10 @@ echo "nameserver 1.1.1.1" | sudo tee -a /etc/resolv.conf
 echo "nameserver 8.8.8.8" | sudo tee -a /etc/resolv.conf
 echo "Done"
 read -s -n 1 -p "Press any key to continue . . ."
-goto start
-
+start
+}
 #8
-chmodcrit:
+function chmodcrit() {
 echo "Chmod all those important files:
 1.) root 644 passwd
 2.) root 644 group
@@ -301,15 +298,15 @@ elif [$input == 5]; then
     chmod 644 -R /etc/ssh
     chown -R root:root /etc/ssh
 elif [$input == 6]; then
-    goto start
+    start
 fi
+}
 
 
 
-
-if [$input == 1]; then
-elif [$input == 2]; then
-elif [$input == 3]; then
-elif [$input == 4]; then
-elif [$input == 5]; then
-fi
+#if [$input == 1]; then
+#elif [$input == 2]; then
+#elif [$input == 3]; then
+#elif [$input == 4]; then
+#elif [$input == 5]; then
+#fi
