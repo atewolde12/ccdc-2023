@@ -7,17 +7,17 @@ function goto {
   exit
 }
 
-os = grep -E '^ID' /etc/os-release | cut -d= -f2 | sed 's/"//g' | head -n 1
+os=grep -E '^ID' /etc/os-release | cut -d= -f2 | sed 's/"//g' | head -n 1
 
 if which apt >/dev/null 2>&1; then
   echo "This system uses apt."
-  pm = "apt"
+  pm="apt"
 elif which apt-get >/dev/null 2>&1; then
   echo "This system uses apt-get."
-  pm = "apt-get"
+  pm="apt-get"
 elif which yum >/dev/null 2>&1; then
   echo "This system uses yum."
-  pm = "yum"
+  pm="yum"
 else
   echo "Neither apt, apt-get, nor yum command is found on this system."
 fi
@@ -79,17 +79,17 @@ echo "Select you package manager:
 4.) Fuck, I didn't mean to go here. Take me back"
 read input
 if ["$input" == 1]; then
-    pm = "apt"
+    pm="apt"
     echo "Apt selected"
     read -s -n 1 -p "Press any key to continue . . ."
     goto start
 elif [$input == 2]; then
-    pm = "apt-get"
+    pm="apt-get"
     echo "Apt-get selected"
     read -s -n 1 -p "Press any key to continue . . ."
     goto start
 elif [$input == 3]; then
-    pm = "yum"
+    pm="yum"
     echo "Yum selected"
     read -s -n 1 -p "Press any key to continue . . ."
     goto start
