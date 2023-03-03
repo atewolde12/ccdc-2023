@@ -144,7 +144,6 @@ fi
 
 function SSHDconf(){
 #4
-SSHDconf:
 clear
 echo "sshd config:
 1.) Permitrootlogin no
@@ -273,6 +272,7 @@ echo "Done"
 read -s -n 1 -p "Press any key to continue . . ."
 start
 }
+
 #8
 function chmodcrit() {
 echo "Chmod all those important files:
