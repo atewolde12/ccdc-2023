@@ -215,6 +215,7 @@ if [$input == 1]; then
     elif ["$on" == "yum"]; then
         sudo yum update
         sudo yum install ufw
+    fi
 elif [$input == 2]; then
     sudo ufw default deny incoming
 elif [$input == 3]; then
