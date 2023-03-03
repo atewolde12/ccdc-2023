@@ -1,6 +1,6 @@
 #!/bin/bash
 
-os=grep -e '^ID' /etc/os-release | cut -d= -f2 | sed 's/"//g' | head -n 1
+os=grep '^ID' /etc/os-release | cut -d= -f2 | sed 's/"//g' | head -n 1
 
 if which apt >/dev/null 2>&1; then
   echo "This system uses apt."
@@ -16,6 +16,7 @@ else
 fi
 
 function start(){
+clear
 echo "
   _____  __  __  _____ _____ _____   _____ 
  |  __ \|  \/  |/ ____/ ____|  __ \ / ____|
@@ -37,7 +38,7 @@ echo "
 8.) chmod critical
 9.) Exit"
 read input
-if [ $input -eq 1]; then
+if [ $input -eq 1 ]; then
     echo 1
     packageSelect
 elif [ $input -eq 2 ]; then
@@ -94,6 +95,7 @@ fi
 
 #2
 function nologin() {
+clear
 grep -v "/sbin/nologin" /etc/passwd | cut -d: -f1,3,7 
 echo -e "Enter a user id to change to /sbin/nologin: (UID/-1 to exit)\n"
 read input
